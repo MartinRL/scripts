@@ -18,10 +18,14 @@ if (!File.Exists(filePath))
     return;
 }
 
+Console.WriteLine($"Reading file: {filePath}");
+
 string htmlContent = File.ReadAllText(filePath);
 
 string pattern = @"<span class=""airport"" ng-if=""::!vm\.optionsMap\.route"">(.+?)<\/span>";
 var matches = Regex.Matches(htmlContent, pattern);
+
+Console.WriteLine($"Number of matches found: {matches.Count}");
 
 if (matches.Count == 0)
 {
