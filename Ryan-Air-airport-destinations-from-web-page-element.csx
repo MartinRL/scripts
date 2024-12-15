@@ -1,8 +1,6 @@
-#r "nuget: HtmlAgilityPack"
-
 using System;
 using System.IO;
-using HtmlAgilityPack;
+using System.Text.RegularExpressions;
 
 var args = Environment.GetCommandLineArgs();
 
@@ -20,18 +18,18 @@ if (!File.Exists(filePath))
     return;
 }
 
-var htmlDoc = new HtmlDocument();
-htmlDoc.Load(filePath);
+string htmlContent = File.ReadAllText(filePath);
 
-var airportNodes = htmlDoc.DocumentNode.SelectNodes("//span[@class='airport' and @ng-if='::!vm.optionsMap.route']");
+string pattern = @"<span class=""airport"" ng-if=""::!vm\.optionsMap\.route"">(.+?)<\/span>";
+var matches = Regex.Matches(htmlContent, pattern);
 
-if (airportNodes == null || airportNodes.Count == 0)
+if (matches.Count == 0)
 {
     Console.WriteLine("No airport elements found.");
     return;
 }
 
-foreach (var node in airportNodes)
+foreach (Match match in matches)
 {
-    Console.WriteLine(node.InnerText);
+    Console.WriteLine(match.Groups[1].Value);
 }
