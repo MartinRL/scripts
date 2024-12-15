@@ -2,16 +2,17 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using HtmlAgilityPack;
 
-if (args.Length == 0)
+var args = Environment.GetCommandLineArgs();
+
+if (args.Length < 2)
 {
     Console.WriteLine("Please provide the HTML file path as an argument.");
     return;
 }
 
-string filePath = args[0];
+string filePath = args[1];
 
 if (!File.Exists(filePath))
 {
@@ -24,7 +25,7 @@ htmlDoc.Load(filePath);
 
 var airportNodes = htmlDoc.DocumentNode.SelectNodes("//span[@class='airport' and @ng-if='::!vm.optionsMap.route']");
 
-if (airportNodes == null || !airportNodes.Any())
+if (airportNodes == null || airportNodes.Count == 0)
 {
     Console.WriteLine("No airport elements found.");
     return;
