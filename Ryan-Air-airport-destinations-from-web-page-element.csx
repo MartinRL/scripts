@@ -4,13 +4,22 @@ using System.Text.RegularExpressions;
 
 var args = Environment.GetCommandLineArgs();
 
-if (args.Length < 2)
+string filePath = null;
+
+for (int i = 0; i < args.Length; i++)
 {
-    Console.WriteLine("Please provide the HTML file path as an argument.");
-    return;
+    if (args[i] == "-f" && i + 1 < args.Length)
+    {
+        filePath = args[i + 1];
+        break;
+    }
 }
 
-string filePath = args[1];
+if (filePath == null)
+{
+    Console.WriteLine("Please provide the HTML file path using the -f argument.");
+    return;
+}
 
 if (!File.Exists(filePath))
 {
