@@ -42,7 +42,9 @@ if (matches.Count == 0)
     return;
 }
 
-foreach (Match match in matches)
+var airportNames = matches.Cast<Match>().Select(m => m.Groups[1].Value).OrderBy(name => name);
+
+foreach (var name in airportNames)
 {
-    Console.WriteLine(match.Groups[1].Value);
+    Console.WriteLine(name);
 }
